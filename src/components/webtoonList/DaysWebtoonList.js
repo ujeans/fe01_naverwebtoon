@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import styled from "styled-components";
 // components
-import WebtoonFiltered from "./WebtoonFiltered";
 import SkeletonLoader from "../monthnewwebtoon/SkeletonLoader";
+// Lazy loading WebtoonFiltered
+const WebtoonFiltered = lazy(() => import("./WebtoonFiltered"));
 
 const DaysWebtoonList = () => {
   const [currentDay, setCurrentDay] = useState("");
@@ -52,7 +53,9 @@ const DaysWebtoonList = () => {
     <>
       <Header>
         <Title>요일별 전체 웹툰</Title>
-        <WebtoonFiltered setWebtoons={setFilteredWebtoons} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <WebtoonFiltered setWebtoons={setFilteredWebtoons} />
+        </Suspense>
       </Header>
       <ListWrapper>
         {daysOfWeek.map((day, index) => (
