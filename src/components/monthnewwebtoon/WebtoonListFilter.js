@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const WebtoonListFilter = () => {
   const [webtoons, setWebtoons] = useState([]);
@@ -57,6 +59,7 @@ const WebtoonListFilter = () => {
                 <WebtoonImage
                   src={webtoon.img}
                   alt="웹툰 이미지"
+                  effect="blur"
                   onClick={() => window.open(webtoon.url, "_blank")}
                 />
               </TitleLink>
@@ -97,7 +100,6 @@ const WebtoonListContainer = styled.div`
 const BoxContainer = styled.div`
   border: none;
   margin-bottom: 20px;
-  /* margin: 0 24px 20px 0; */
   position: relative;
 `;
 
@@ -125,8 +127,9 @@ const AuthorLink = styled.a`
   cursor: pointer;
 `;
 
-const WebtoonImage = styled.img`
+const WebtoonImage = styled(LazyLoadImage)`
   margin-bottom: 5px;
+  width: 220px;
   height: 285px;
   border-radius: 5px;
   border: ${props => props.theme.borderColor};
