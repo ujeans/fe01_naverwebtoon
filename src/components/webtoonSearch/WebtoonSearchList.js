@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
 
 //components
-// import WebtoonAside from "./WebtoonAside";
 import { useLocation } from "react-router-dom";
 
 const WebtoonSearchList = () => {
@@ -15,7 +14,7 @@ const WebtoonSearchList = () => {
   const [filteredWebtoons, setFilteredWebtoons] = useState([]);
   const [searchWebtoons, setSearchWebtoons] = useState([]);
 
-  const handleOptionClick = (index) => {
+  const handleOptionClick = index => {
     setSelectedOption(index);
   };
 
@@ -30,7 +29,7 @@ const WebtoonSearchList = () => {
         const searchWebtoons = data.webtoons;
         //연재여부 필터
         const filteredWebtoons = searchWebtoons.filter(
-          (webtoon) => !webtoon.updateDays.includes("finished")
+          webtoon => !webtoon.updateDays.includes("finished")
         );
 
         setFilteredWebtoons(filteredWebtoons);
@@ -106,7 +105,7 @@ const WebtoonSearchList = () => {
           </ContentHeadArea>
           <Result>
             <ResultList>
-              {searchWebtoons.map((webtoon) => (
+              {searchWebtoons.map(webtoon => (
                 <ResultItemBox key={webtoon._id}>
                   <>
                     <ImageBox>
@@ -180,15 +179,15 @@ const SearchKeyword = styled.strong`
 const TabControl = styled.div`
   display: flex;
   width: 840px;
-  border-bottom: ${(props) => props.theme.borderColor};
+  border-bottom: ${props => props.theme.borderColor};
 `;
 
 const Tab = styled.div`
   display: flex;
-  color: ${(props) => (props.isSelected ? "#00DC64" : "")};
+  color: ${props => (props.isSelected ? "#00DC64" : "")};
   margin-right: 20px;
   align-items: center;
-  border-bottom: ${(props) => (props.isSelected ? "2px solid #00DC64" : "")};
+  border-bottom: ${props => (props.isSelected ? "2px solid #00DC64" : "")};
   cursor: pointer;
   font-size: 15px;
   font-weight: 600;
@@ -213,7 +212,7 @@ const ContentHeadArea = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: ${(props) => props.theme.borderColor};
+  border-bottom: ${props => props.theme.borderColor};
 `;
 
 const ContentHeader = styled.div`

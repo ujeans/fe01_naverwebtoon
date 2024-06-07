@@ -1,3 +1,4 @@
+// components
 import WebtoonHeader from "../webtoonHeader/WebtoonHeader";
 import WebtoonCategoryHeader from "../webtoonHeader/WebtoonCategoryHeader";
 import WebtoonDayHeader from "../webtoonHeader/WebtoonDayHeader";

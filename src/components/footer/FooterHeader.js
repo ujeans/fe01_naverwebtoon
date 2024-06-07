@@ -1,4 +1,5 @@
 import styled from "styled-components";
+// assets
 import arrowSvg from "../../assets/arrow.svg";
 
 const FooterHeader = () => {

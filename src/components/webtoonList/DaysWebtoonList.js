@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import WebtoonFiltered from "./WebtoonFiltered"; // WebtoonFiltered 컴포넌트 임포트
+// components
+import WebtoonFiltered from "./WebtoonFiltered";
 
 const DaysWebtoonList = () => {
   const [currentDay, setCurrentDay] = useState("");
-  const [filteredWebtoons, setFilteredWebtoons] = useState([]); // Define filteredWebtoons state
-  const daysOfWeek = ["월", "화", "수", "목", "금", "토", "일"]; // daysOfWeek 변수 정의
+  const [filteredWebtoons, setFilteredWebtoons] = useState([]);
+  const daysOfWeek = ["월", "화", "수", "목", "금", "토", "일"];
 
   useEffect(() => {
     const currentDate = new Date();
@@ -14,7 +15,6 @@ const DaysWebtoonList = () => {
     setCurrentDay(week[currentDayIndex]);
   }, []);
 
-  // getUpdateDay 함수 추가
   const getUpdateDay = day => {
     switch (day) {
       case "월":
@@ -41,7 +41,6 @@ const DaysWebtoonList = () => {
       <Header>
         <Title>요일별 전체 웹툰</Title>
         <WebtoonFiltered setWebtoons={setFilteredWebtoons} />{" "}
-        {/* setWebtoons prop 추가 */}
       </Header>
       <ListWrapper>
         {daysOfWeek.map((day, index) => (

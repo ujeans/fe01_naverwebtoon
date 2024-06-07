@@ -1,11 +1,10 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaRegCommentDots } from "react-icons/fa6";
 import { FaEnvelope } from "react-icons/fa6";
 import { FaBars } from "react-icons/fa";
-import styled from "styled-components";
 
 const WebtoonHeader = () => {
   const navigate = useNavigate();
@@ -23,12 +22,6 @@ const WebtoonHeader = () => {
   const submit = event => {
     event.preventDefault();
     handleSearch();
-  };
-
-  const onSubmitSearch = event => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
   };
 
   const handleSearch = () => {
@@ -65,15 +58,7 @@ const WebtoonHeader = () => {
             placeholder="제목/작가로 검색할 수 있습니다."
             value={keyword}
             onChange={getValue}
-            onKeyPress={onSubmitSearch}
           />
-          {/* <button>
-            <FaSearch
-              className="customSearchIcon"
-              size={18}
-              color={"#666666"}
-            />
-          </button> */}
         </FormWrapper>
         <IconWrapper>
           <Icon className="user-icon">

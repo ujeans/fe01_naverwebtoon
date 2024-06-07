@@ -1,8 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
+// pages
 import Home from "./pages/Home";
 import Search from "./pages/Search";
+// context
 import { ThemeProvider } from "./context/themeProvider";
+// UI
 import { GlobalStyle } from "./UI/theme/GlobalStyle";
 
 function App() {
