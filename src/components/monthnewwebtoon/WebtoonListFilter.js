@@ -195,38 +195,3 @@ const loadingAnimation = keyframes`
     background-position: calc(200px + 100%) 0;
   }
 `;
-
-// 스켈레톤 박스 스타일
-const SkeletonBox = styled.div`
-  /* width: 220px;
-  height: 335px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 5px;
-  margin-bottom: 20px;
-  overflow: hidden; */
-`;
-
-// 스켈레톤 이미지 스타일
-const SkeletonImage = styled.div`
-  width: 220px;
-  height: 285px;
-  margin-bottom: 5px;
-  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
-  background-size: 200px 100%;
-  animation: ${loadingAnimation} 1.5s infinite linear;
-  border-radius: 5px;
-`;
-
-// 스켈레톤 텍스트 스타일
-const SkeletonText = styled.div`
-  width: 80%;
-  height: 20px;
-  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
-  background-size: 200px 100%;
-  animation: ${loadingAnimation} 1.5s infinite linear;
-  border-radius: 5px;
-  margin-bottom: 5px;
-`;

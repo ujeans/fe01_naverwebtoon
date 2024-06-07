@@ -1,5 +1,3 @@
-// SkeletonLoader.js
-import React from "react";
 import styled, { keyframes } from "styled-components";
 
 const SkeletonLoader = ({ width, height, count = 1 }) => (

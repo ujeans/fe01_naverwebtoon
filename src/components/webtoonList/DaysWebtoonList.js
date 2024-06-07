@@ -7,7 +7,7 @@ import SkeletonLoader from "../monthnewwebtoon/SkeletonLoader";
 const DaysWebtoonList = () => {
   const [currentDay, setCurrentDay] = useState("");
   const [filteredWebtoons, setFilteredWebtoons] = useState([]);
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [loading, setLoading] = useState(true);
 
   const daysOfWeek = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -19,9 +19,7 @@ const DaysWebtoonList = () => {
   }, []);
 
   useEffect(() => {
-    // 웹툰 필터링 데이터를 가져오는 로직 (예: WebtoonFiltered의 콜백을 통해 데이터를 가져오는 경우)
     const fetchFilteredWebtoons = async () => {
-      // 예시: 2초 후 로딩 완료 상태로 변경
       setTimeout(() => {
         setLoading(false);
       }, 2000);
@@ -196,27 +194,4 @@ const WebtoonTitle = styled.div`
   &:hover {
     text-decoration: underline;
   }
-`;
-
-const SkeletonWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const SkeletonImage = styled.div`
-  width: 95%;
-  height: 200px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
-  background-size: 200px 100%;
-  margin-bottom: 13px;
-`;
-
-const SkeletonText = styled.div`
-  width: 60%;
-  height: 20px;
-  border-radius: 4px;
-  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
-  background-size: 200px 100%;
 `;
