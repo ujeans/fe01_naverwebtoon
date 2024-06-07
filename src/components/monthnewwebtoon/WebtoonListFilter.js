@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
-import SkeletonLoader from "./SkeletonLoader";
+import SkeletonLoader from "../common/SkeletonLoader";
 
 const WebtoonListFilter = () => {
   const [webtoons, setWebtoons] = useState([]);

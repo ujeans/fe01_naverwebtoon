@@ -1,8 +1,8 @@
-import React, { useState, useEffect, Suspense, lazy } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 // components
 import WebtoonFiltered from "./WebtoonFiltered";
-import SkeletonLoader from "../monthnewwebtoon/SkeletonLoader";
+import SkeletonLoader from "../common/SkeletonLoader";
 
 const DaysWebtoonList = () => {
   const [currentDay, setCurrentDay] = useState("");
@@ -52,9 +52,7 @@ const DaysWebtoonList = () => {
     <>
       <Header>
         <Title>요일별 전체 웹툰</Title>
-        <Suspense fallback={<div>Loading...</div>}>
-          <WebtoonFiltered setWebtoons={setFilteredWebtoons} />
-        </Suspense>
+        <WebtoonFiltered setWebtoons={setFilteredWebtoons} />
       </Header>
       <ListWrapper>
         {daysOfWeek.map((day, index) => (
