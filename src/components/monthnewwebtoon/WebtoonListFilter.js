@@ -77,8 +77,6 @@ const WebtoonListFilter = () => {
                   src={webtoon.img}
                   alt="웹툰 이미지"
                   onClick={() => window.open(webtoon.url, "_blank")}
-                  width={220}
-                  height={285}
                 />
               </TitleLink>
             </div>
@@ -120,6 +118,7 @@ const BoxContainer = styled.div`
   margin-bottom: 20px;
   position: relative;
   width: 220px;
+  height: 335px;
 `;
 
 const TitleLink = styled.a`
@@ -169,9 +168,6 @@ const NewIcon = styled.div`
   justify-content: center;
   align-items: center;
   color: #002110;
-  font-family: Pretendard, Helvetica, -apple-system, BlinkMacSystemFont,
-    "Apple SD Gothic Neo", "맑은 고딕", "Malgun Gothic", "돋움", Dotum,
-    sans-serif;
   font-size: 12px;
   font-weight: 1000;
   margin: 7px 0 0 7px;

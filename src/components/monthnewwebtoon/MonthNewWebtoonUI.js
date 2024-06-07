@@ -29,9 +29,6 @@ const Header = styled.div`
   align-items: center;
   height: 50px;
   margin-bottom: 5px;
-  font-family: Pretendard, Helvetica, -apple-system, BlinkMacSystemFont,
-    "Apple SD Gothic Neo", "맑은 고딕", "Malgun Gothic", "돋움", Dotum,
-    sans-serif;
   font-size: 12px;
 `;
 
