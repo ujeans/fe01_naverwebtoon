@@ -29,7 +29,6 @@ const WebtoonListFilter = () => {
 
         preloadImages(latestNewWebtoons.map(webtoon => webtoon.img));
         setLoading(false);
-        console.log("로드된 신규 웹툰 목록:", latestNewWebtoons);
       } catch (error) {
         console.error("웹툰 데이터를 불러오는 중 오류 발생:", error);
         setLoading(false);

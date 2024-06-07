@@ -19,7 +19,6 @@ const WebtoonSearchList = () => {
   };
 
   useEffect(() => {
-    console.log(keyword);
     const fetchData = async () => {
       try {
         const response = await fetch(
