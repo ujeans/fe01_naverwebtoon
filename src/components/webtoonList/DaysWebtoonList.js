@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 // components
 import WebtoonFiltered from "./WebtoonFiltered";
+import SkeletonLoader from "../monthnewwebtoon/SkeletonLoader";
 
 const DaysWebtoonList = () => {
   const [currentDay, setCurrentDay] = useState("");
   const [filteredWebtoons, setFilteredWebtoons] = useState([]);
+  const [loading, setLoading] = useState(true); // 로딩 상태 추가
+
   const daysOfWeek = ["월", "화", "수", "목", "금", "토", "일"];
 
   useEffect(() => {
@@ -15,6 +18,17 @@ const DaysWebtoonList = () => {
     setCurrentDay(week[currentDayIndex]);
   }, []);
 
+  useEffect(() => {
+    // 웹툰 필터링 데이터를 가져오는 로직 (예: WebtoonFiltered의 콜백을 통해 데이터를 가져오는 경우)
+    const fetchFilteredWebtoons = async () => {
+      // 예시: 2초 후 로딩 완료 상태로 변경
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+    };
+
+    fetchFilteredWebtoons();
+  }, []);
   const getUpdateDay = day => {
     switch (day) {
       case "월":
@@ -40,7 +54,7 @@ const DaysWebtoonList = () => {
     <>
       <Header>
         <Title>요일별 전체 웹툰</Title>
-        <WebtoonFiltered setWebtoons={setFilteredWebtoons} />{" "}
+        <WebtoonFiltered setWebtoons={setFilteredWebtoons} />
       </Header>
       <ListWrapper>
         {daysOfWeek.map((day, index) => (
@@ -48,25 +62,29 @@ const DaysWebtoonList = () => {
             <Days day={day} currentDay={currentDay}>
               {day}요웹툰
             </Days>
-            {filteredWebtoons
-              .filter(webtoon => webtoon.updateDays[0] === getUpdateDay(day))
-              .map(webtoon => {
-                return (
-                  <ItemBox key={webtoon.webtoonId}>
-                    <ImageBox>
-                      <Image
-                        src={webtoon.img}
-                        alt="웹툰 이미지"
-                        onClick={() => window.open(webtoon.url, "_blank")}
-                      ></Image>
-                    </ImageBox>
-                    <TitleBox>
-                      {day === currentDay ? <Upload>UP</Upload> : ""}
-                      <WebtoonTitle>{webtoon.title}</WebtoonTitle>
-                    </TitleBox>
-                  </ItemBox>
-                );
-              })}
+            {loading ? (
+              <SkeletonLoader width="95%" height="200px" />
+            ) : (
+              filteredWebtoons
+                .filter(webtoon => webtoon.updateDays[0] === getUpdateDay(day))
+                .map(webtoon => {
+                  return (
+                    <ItemBox key={webtoon.webtoonId}>
+                      <ImageBox>
+                        <Image
+                          src={webtoon.img}
+                          alt="웹툰 이미지"
+                          onClick={() => window.open(webtoon.url, "_blank")}
+                        />
+                      </ImageBox>
+                      <TitleBox>
+                        {day === currentDay ? <Upload>UP</Upload> : ""}
+                        <WebtoonTitle>{webtoon.title}</WebtoonTitle>
+                      </TitleBox>
+                    </ItemBox>
+                  );
+                })
+            )}
           </ListItems>
         ))}
       </ListWrapper>
@@ -134,6 +152,7 @@ const ImageBox = styled.div`
   margin-bottom: 13px;
   border-radius: 4px;
   overflow: hidden;
+  background-color: red;
 `;
 
 const Image = styled.img`
@@ -177,4 +196,27 @@ const WebtoonTitle = styled.div`
   &:hover {
     text-decoration: underline;
   }
+`;
+
+const SkeletonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const SkeletonImage = styled.div`
+  width: 95%;
+  height: 200px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
+  background-size: 200px 100%;
+  margin-bottom: 13px;
+`;
+
+const SkeletonText = styled.div`
+  width: 60%;
+  height: 20px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
+  background-size: 200px 100%;
 `;
