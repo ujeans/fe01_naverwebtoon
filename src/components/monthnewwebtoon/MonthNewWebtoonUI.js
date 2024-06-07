@@ -1,9 +1,8 @@
-import React, { Suspense, lazy } from "react";
 import styled from "styled-components";
+// components
+import WebtoonListFilter from "./WebtoonListFilter";
 // assets
 import arrowSvg from "../../assets/arrow.svg";
-// Lazy loading WebtoonListFilter
-const WebtoonListFilter = lazy(() => import("./WebtoonListFilter"));
 
 const MonthNewWebtoonUI = () => {
   return (
@@ -16,9 +15,7 @@ const MonthNewWebtoonUI = () => {
         </MoreWatch>
       </Header>
 
-      <Suspense fallback={<div>Loading...</div>}>
-        <WebtoonListFilter />
-      </Suspense>
+      <WebtoonListFilter />
     </Webtoonbox>
   );
 };

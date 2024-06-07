@@ -1,9 +1,8 @@
 import React, { useState, useEffect, Suspense, lazy } from "react";
 import styled from "styled-components";
 // components
+import WebtoonFiltered from "./WebtoonFiltered";
 import SkeletonLoader from "../monthnewwebtoon/SkeletonLoader";
-// Lazy loading WebtoonFiltered
-const WebtoonFiltered = lazy(() => import("./WebtoonFiltered"));
 
 const DaysWebtoonList = () => {
   const [currentDay, setCurrentDay] = useState("");

@@ -1,14 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import { Suspense, lazy } from "react";
 // pages
+import Home from "./pages/Home";
 import Search from "./pages/Search";
 // context
 import { ThemeProvider } from "./context/themeProvider";
 // UI
 import { GlobalStyle } from "./UI/theme/GlobalStyle";
-
-// Lazy loading components
-const Home = lazy(() => import("./pages/Home"));
 
 function App() {
   return (
