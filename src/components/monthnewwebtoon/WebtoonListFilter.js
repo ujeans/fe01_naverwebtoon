@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 
 const WebtoonListFilter = () => {
   const [webtoons, setWebtoons] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [preloadedImages, setPreloadedImages] = useState([]);
 
   useEffect(() => {
     const fetchWebtoons = async () => {
@@ -26,6 +25,8 @@ const WebtoonListFilter = () => {
         const latestNewWebtoons = shuffledNewWebtoons.slice(0, 5);
 
         setWebtoons(latestNewWebtoons);
+
+        preloadImages(latestNewWebtoons.map(webtoon => webtoon.img));
         setLoading(false);
         console.log("로드된 신규 웹툰 목록:", latestNewWebtoons);
       } catch (error) {
@@ -46,6 +47,22 @@ const WebtoonListFilter = () => {
     return shuffled;
   };
 
+  const preloadImages = srcs => {
+    const promises = srcs.map(
+      src =>
+        new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = resolve;
+          img.onerror = reject;
+        })
+    );
+
+    Promise.all(promises)
+      .then(() => setPreloadedImages(srcs))
+      .catch(err => console.error("이미지 미리 로드 중 오류 발생:", err));
+  };
+
   return (
     <WebtoonListContainer>
       {loading ? (
@@ -59,8 +76,9 @@ const WebtoonListFilter = () => {
                 <WebtoonImage
                   src={webtoon.img}
                   alt="웹툰 이미지"
-                  effect="blur"
                   onClick={() => window.open(webtoon.url, "_blank")}
+                  width={220}
+                  height={285}
                 />
               </TitleLink>
             </div>
@@ -101,6 +119,7 @@ const BoxContainer = styled.div`
   border: none;
   margin-bottom: 20px;
   position: relative;
+  width: 220px;
 `;
 
 const TitleLink = styled.a`
@@ -127,7 +146,7 @@ const AuthorLink = styled.a`
   cursor: pointer;
 `;
 
-const WebtoonImage = styled(LazyLoadImage)`
+const WebtoonImage = styled.img`
   margin-bottom: 5px;
   width: 220px;
   height: 285px;

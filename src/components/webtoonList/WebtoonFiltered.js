@@ -4,6 +4,7 @@ import styled from "styled-components";
 const WebtoonFiltered = ({ setWebtoons }) => {
   const [selectedFilter, setSelectedFilter] = useState("popular");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [preloadedImages, setPreloadedImages] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +29,7 @@ const WebtoonFiltered = ({ setWebtoons }) => {
           case "update":
             sortedWebtoons = data.webtoons
               .filter(
-                (webtoon) =>
+                webtoon =>
                   webtoon.additional && webtoon.additional.up !== undefined
               )
               .sort((a, b) =>
@@ -40,7 +41,7 @@ const WebtoonFiltered = ({ setWebtoons }) => {
           case "rest":
             sortedWebtoons = data.webtoons
               .filter(
-                (webtoon) =>
+                webtoon =>
                   webtoon.additional && webtoon.additional.rest !== undefined
               )
               .sort((a, b) =>
@@ -64,8 +65,9 @@ const WebtoonFiltered = ({ setWebtoons }) => {
           return 0;
         });
 
-        console.log("Sorted webtoons:", sortedWebtoons);
+        preloadImages(sortedWebtoons.map(webtoon => webtoon.img));
         setWebtoons(sortedWebtoons);
+        console.log("Sorted webtoons:", sortedWebtoons);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -73,7 +75,23 @@ const WebtoonFiltered = ({ setWebtoons }) => {
     fetchData();
   }, [selectedFilter, setWebtoons, sortOrder]);
 
-  const handleOptionClick = (filter) => {
+  const preloadImages = srcs => {
+    const promises = srcs.map(
+      src =>
+        new Promise((resolve, reject) => {
+          const img = new Image();
+          img.src = src;
+          img.onload = resolve;
+          img.onerror = reject;
+        })
+    );
+
+    Promise.all(promises)
+      .then(() => setPreloadedImages(srcs))
+      .catch(err => console.error("이미지 미리 로드 중 오류 발생:", err));
+  };
+
+  const handleOptionClick = filter => {
     if (filter === selectedFilter) {
       if (filter === "popular") {
         setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -124,7 +142,7 @@ const OptionWrapper = styled.div`
 
 const Option = styled.div`
   margin: 0 5px;
-  color: ${(props) => (props.selected ? "#00dc64" : "#666666")};
+  color: ${props => (props.selected ? "#00dc64" : "#666666")};
   font-size: 15px;
   font-weight: bold;
   cursor: pointer;
