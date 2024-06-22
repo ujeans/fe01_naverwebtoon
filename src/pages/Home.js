@@ -2,11 +2,11 @@ import { Helmet } from "react-helmet-async";
 // UI
 import Layout from "../UI/Layout";
 // components
-import Header from "../components/webtoonList/WeekWebtoon";
 import MonthNewWebtoonUI from "../components/monthnewwebtoon/MonthNewWebtoonUI";
 import DaysWebtoonList from "../components/webtoonList/DaysWebtoonList";
 import Footer from "../components/footer/Footer";
 import { useEffect, useState } from "react";
+import WebtoonDayHeader from "../components/webtoonHeader/WebtoonDayHeader";
 
 const Home = () => {
   const [allWebtoons, setAllWebtoons] = useState([]);
@@ -68,7 +68,7 @@ const Home = () => {
         <title>요일 전체 : 네이버 웹툰</title>
       </Helmet>
 
-      <Header />
+      <WebtoonDayHeader />
       <MonthNewWebtoonUI webtoons={allWebtoons} loading={loading} />
       <DaysWebtoonList webtoons={allWebtoons} loading={loading} />
       <Footer />
