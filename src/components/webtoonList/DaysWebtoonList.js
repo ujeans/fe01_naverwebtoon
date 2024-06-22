@@ -4,10 +4,8 @@ import styled from "styled-components";
 import WebtoonFiltered from "./WebtoonFiltered";
 import SkeletonLoader from "../common/SkeletonLoader";
 
-const DaysWebtoonList = () => {
+const DaysWebtoonList = ({ webtoons, loading }) => {
   const [currentDay, setCurrentDay] = useState("");
-  const [filteredWebtoons, setFilteredWebtoons] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const daysOfWeek = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -16,59 +14,6 @@ const DaysWebtoonList = () => {
     const week = ["일", "월", "화", "수", "목", "금", "토"];
     const currentDayIndex = currentDate.getDay();
     setCurrentDay(week[currentDayIndex]);
-  }, []);
-  useEffect(() => {
-    const fetchAllWebtoons = async () => {
-      setLoading(true);
-      try {
-        const apiURL = `${process.env.REACT_APP_API}/webtoons?provider=NAVER&perPage=100`;
-
-        const initialResponse = await fetch(apiURL + `&page=1`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!initialResponse.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const initialData = await initialResponse.json();
-        const totalWebtoons = initialData.total;
-        const perPage = 100;
-        const totalPages = Math.ceil(totalWebtoons / perPage);
-
-        const requests = [];
-        for (let page = 1; page <= totalPages; page++) {
-          requests.push(
-            fetch(apiURL + `&page=${page}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }).then(response => response.json())
-          );
-        }
-
-        const results = await Promise.all(requests);
-        const allWebtoons = results.flatMap(result => result.webtoons);
-
-        console.log(allWebtoons);
-
-        const filteredWebtoons = allWebtoons.filter(
-          webtoon => !webtoon.isEnd && webtoon.updateDays.length > 0
-        );
-
-        console.log(filteredWebtoons);
-
-        setFilteredWebtoons(filteredWebtoons);
-      } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAllWebtoons();
   }, []);
 
   const getUpdateDay = day => {
@@ -96,7 +41,7 @@ const DaysWebtoonList = () => {
     <>
       <Header>
         <Title>요일별 전체 웹툰</Title>
-        <WebtoonFiltered setWebtoons={setFilteredWebtoons} />
+        <WebtoonFiltered setWebtoons={() => {}} />
       </Header>
       <ListWrapper>
         {daysOfWeek.map((day, index) => (
@@ -107,7 +52,7 @@ const DaysWebtoonList = () => {
             {loading ? (
               <SkeletonLoader width="95%" height="200px" />
             ) : (
-              filteredWebtoons
+              webtoons
                 .filter(webtoon => webtoon.updateDays[0] === getUpdateDay(day))
                 .map(webtoon => (
                   <ItemBox key={webtoon.id}>

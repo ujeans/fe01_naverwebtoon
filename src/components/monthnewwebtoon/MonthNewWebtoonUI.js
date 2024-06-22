@@ -4,7 +4,7 @@ import WebtoonListFilter from "./WebtoonListFilter";
 // assets
 import arrowSvg from "../../assets/arrow.svg";
 
-const MonthNewWebtoonUI = () => {
+const MonthNewWebtoonUI = ({ webtoons, loading }) => {
   return (
     <Webtoonbox>
       <Header>
@@ -15,7 +15,7 @@ const MonthNewWebtoonUI = () => {
         </MoreWatch>
       </Header>
 
-      <WebtoonListFilter />
+      <WebtoonListFilter webtoons={webtoons} loading={loading} />
     </Webtoonbox>
   );
 };

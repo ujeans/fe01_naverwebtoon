@@ -1,68 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import SkeletonLoader from "../common/SkeletonLoader";
 
-const WebtoonListFilter = () => {
-  const [webtoons, setWebtoons] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [preloadedImages, setPreloadedImages] = useState([]);
+const WebtoonListFilter = ({ webtoons, loading }) => {
+  const [randomWebtoons, setRandomWebtoons] = useState([]);
+  const hasSelectedRandomWebtoons = useRef(false);
 
-  // useEffect(() => {
-  //   const fetchWebtoons = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `${process.env.REACT_APP_API}?service=naver&perPage=3000`
-  //       );
-  //       if (!response.ok) {
-  //         throw new Error("네트워크 응답이 실패했습니다");
-  //       }
-  //       const data = await response.json();
+  const top40Webtoons = webtoons
+    .sort((a, b) => {
+      const idA = parseInt(a.id.split("_")[1], 10);
+      const idB = parseInt(b.id.split("_")[1], 10);
+      return idB - idA;
+    })
+    .slice(0, 40);
 
-  //       console.log(data);
-
-  //       const newWebtoons = data.webtoons.filter(
-  //         webtoon => webtoon.additional && webtoon.additional.new === true
-  //       );
-
-  //       const shuffledNewWebtoons = shuffleArray(newWebtoons);
-  //       const latestNewWebtoons = shuffledNewWebtoons.slice(0, 5);
-
-  //       setWebtoons(latestNewWebtoons);
-
-  //       preloadImages(latestNewWebtoons.map(webtoon => webtoon.img));
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error("웹툰 데이터를 불러오는 중 오류 발생:", error);
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchWebtoons();
-  // }, []);
-
-  const shuffleArray = array => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  useEffect(() => {
+    if (!loading && !hasSelectedRandomWebtoons.current) {
+      setRandomWebtoons(selectRandomWebtoons(top40Webtoons, 5));
+      hasSelectedRandomWebtoons.current = true;
     }
-    return shuffled;
-  };
+  }, [loading, top40Webtoons]);
 
-  const preloadImages = srcs => {
-    const promises = srcs.map(
-      src =>
-        new Promise((resolve, reject) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = resolve;
-          img.onerror = reject;
-        })
-    );
-
-    Promise.all(promises)
-      .then(() => setPreloadedImages(srcs))
-      .catch(err => console.error("이미지 미리 로드 중 오류 발생:", err));
+  const selectRandomWebtoons = (webtoons, count) => {
+    const shuffled = [...webtoons].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
   };
 
   return (
@@ -70,13 +31,13 @@ const WebtoonListFilter = () => {
       {loading ? (
         <SkeletonLoader width="220px" height="285px" count={5} />
       ) : (
-        webtoons.map(webtoon => (
+        randomWebtoons.map(webtoon => (
           <BoxContainer key={webtoon._id}>
             <NewIcon>신작</NewIcon>
             <div>
               <TitleLink>
                 <WebtoonImage
-                  src={webtoon.img}
+                  src={webtoon.thumbnail[0]}
                   alt="웹툰 이미지"
                   onClick={() => window.open(webtoon.url, "_blank")}
                 />
@@ -119,8 +80,6 @@ const BoxContainer = styled.div`
   border: none;
   margin-bottom: 20px;
   position: relative;
-  width: 220px;
-  height: 335px;
 `;
 
 const TitleLink = styled.a`
