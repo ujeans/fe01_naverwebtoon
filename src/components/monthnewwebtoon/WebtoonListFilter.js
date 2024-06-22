@@ -107,6 +107,7 @@ const AuthorLink = styled.a`
 `;
 
 const WebtoonImage = styled.img`
+  position: relative;
   margin-bottom: 5px;
   width: 220px;
   height: 285px;

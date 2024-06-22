@@ -136,6 +136,7 @@ const ImageBox = styled.div`
   height: 200px;
   margin-bottom: 13px;
   border-radius: 4px;
+  border: ${props => props.theme.borderColor};
   overflow: hidden;
 `;
 
