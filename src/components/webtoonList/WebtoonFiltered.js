@@ -6,119 +6,23 @@ const WebtoonFiltered = ({ setWebtoons }) => {
   const [sortOrder, setSortOrder] = useState("desc");
   const [preloadedImages, setPreloadedImages] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const perPage = 700;
-      try {
-        const res = await fetch(
-          `${process.env.REACT_APP_API}?service=naver&perPage=${perPage}`
-        );
-        const data = await res.json();
-        let sortedWebtoons = [];
-
-        switch (selectedFilter) {
-          case "popular":
-            sortedWebtoons = data.webtoons
-              .slice()
-              .sort((a, b) =>
-                sortOrder === "desc"
-                  ? b.fanCount - a.fanCount
-                  : a.fanCount - b.fanCount
-              );
-            break;
-          case "update":
-            sortedWebtoons = data.webtoons
-              .filter(
-                webtoon =>
-                  webtoon.additional && webtoon.additional.up !== undefined
-              )
-              .sort((a, b) =>
-                sortOrder === "desc"
-                  ? (b.additional.up || 0) - (a.additional.up || 0)
-                  : (a.additional.up || 0) - (b.additional.up || 0)
-              );
-            break;
-          case "rest":
-            sortedWebtoons = data.webtoons
-              .filter(
-                webtoon =>
-                  webtoon.additional && webtoon.additional.rest !== undefined
-              )
-              .sort((a, b) =>
-                sortOrder === "desc"
-                  ? (b.additional.rest || 0) - (a.additional.rest || 0)
-                  : (a.additional.rest || 0) - (b.additional.rest || 0)
-              );
-            break;
-          default:
-            sortedWebtoons = data.webtoons;
-        }
-
-        // Sort rest (휴재) true values to the bottom
-        sortedWebtoons.sort((a, b) => {
-          if (a.additional.rest === true && b.additional.rest === false) {
-            return 1;
-          }
-          if (a.additional.rest === false && b.additional.rest === true) {
-            return -1;
-          }
-          return 0;
-        });
-
-        preloadImages(sortedWebtoons.map(webtoon => webtoon.img));
-        setWebtoons(sortedWebtoons);
-        console.log("Sorted webtoons:", sortedWebtoons);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, [selectedFilter, setWebtoons, sortOrder]);
-
-  const preloadImages = srcs => {
-    const promises = srcs.map(
-      src =>
-        new Promise((resolve, reject) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = resolve;
-          img.onerror = reject;
-        })
-    );
-
-    Promise.all(promises)
-      .then(() => setPreloadedImages(srcs))
-      .catch(err => console.error("이미지 미리 로드 중 오류 발생:", err));
-  };
-
-  const handleOptionClick = filter => {
-    if (filter === selectedFilter) {
-      if (filter === "popular") {
-        setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-      }
-    } else {
-      setSelectedFilter(filter);
-      setSortOrder("desc");
-    }
-  };
-
   return (
     <FilteredWrapper>
       <OptionWrapper>
         <Option
-          onClick={() => handleOptionClick("popular")}
+          // onClick={() => handleOptionClick("popular")}
           selected={selectedFilter === "popular"}
         >
           인기순 <MiddleDot>&bull;</MiddleDot>
         </Option>
         <Option
-          onClick={() => handleOptionClick("update")}
+          // onClick={() => handleOptionClick("update")}
           selected={selectedFilter === "update"}
         >
           최신업로드 <MiddleDot>&bull;</MiddleDot>
         </Option>
         <Option
-          onClick={() => handleOptionClick("rest")}
+          // onClick={() => handleOptionClick("rest")}
           selected={selectedFilter === "rest"}
         >
           휴재

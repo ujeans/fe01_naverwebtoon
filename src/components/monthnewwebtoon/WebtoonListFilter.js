@@ -7,36 +7,38 @@ const WebtoonListFilter = () => {
   const [loading, setLoading] = useState(true);
   const [preloadedImages, setPreloadedImages] = useState([]);
 
-  useEffect(() => {
-    const fetchWebtoons = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API}?service=naver&perPage=3000`
-        );
-        if (!response.ok) {
-          throw new Error("네트워크 응답이 실패했습니다");
-        }
-        const data = await response.json();
+  // useEffect(() => {
+  //   const fetchWebtoons = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${process.env.REACT_APP_API}?service=naver&perPage=3000`
+  //       );
+  //       if (!response.ok) {
+  //         throw new Error("네트워크 응답이 실패했습니다");
+  //       }
+  //       const data = await response.json();
 
-        const newWebtoons = data.webtoons.filter(
-          webtoon => webtoon.additional && webtoon.additional.new === true
-        );
+  //       console.log(data);
 
-        const shuffledNewWebtoons = shuffleArray(newWebtoons);
-        const latestNewWebtoons = shuffledNewWebtoons.slice(0, 5);
+  //       const newWebtoons = data.webtoons.filter(
+  //         webtoon => webtoon.additional && webtoon.additional.new === true
+  //       );
 
-        setWebtoons(latestNewWebtoons);
+  //       const shuffledNewWebtoons = shuffleArray(newWebtoons);
+  //       const latestNewWebtoons = shuffledNewWebtoons.slice(0, 5);
 
-        preloadImages(latestNewWebtoons.map(webtoon => webtoon.img));
-        setLoading(false);
-      } catch (error) {
-        console.error("웹툰 데이터를 불러오는 중 오류 발생:", error);
-        setLoading(false);
-      }
-    };
+  //       setWebtoons(latestNewWebtoons);
 
-    fetchWebtoons();
-  }, []);
+  //       preloadImages(latestNewWebtoons.map(webtoon => webtoon.img));
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error("웹툰 데이터를 불러오는 중 오류 발생:", error);
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchWebtoons();
+  // }, []);
 
   const shuffleArray = array => {
     const shuffled = [...array];
