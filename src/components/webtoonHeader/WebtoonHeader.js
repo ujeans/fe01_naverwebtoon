@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { FaRegCommentDots } from "react-icons/fa6";
 import { FaEnvelope } from "react-icons/fa6";
@@ -8,12 +8,13 @@ import { FaBars } from "react-icons/fa";
 
 const WebtoonHeader = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const [keyword, setKeyword] = useState(location.state?.keyword || "");
 
   const webtoon = () => {
     navigate("/");
   };
-
-  const [keyword, setKeyword] = useState("");
 
   const getValue = event => {
     setKeyword(event.target.value);
@@ -28,11 +29,14 @@ const WebtoonHeader = () => {
     const fetchWebtoons = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_API}search?keyword=${keyword}`
+          `${process.env.REACT_APP_API}/webtoons?keyword=${keyword}&provider=NAVER`
         );
-        await response.json();
+        const data = await response.json();
+        const webtoons = data.webtoons;
 
-        navigate(`/search?keyword=${keyword}`);
+        console.log(webtoons);
+
+        navigate(`/search?keyword=${keyword}`, { state: { webtoons } });
       } catch (error) {
         console.log(error);
       }

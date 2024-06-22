@@ -1,44 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet-async";
-
-//components
 import { useLocation } from "react-router-dom";
 
 const WebtoonSearchList = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const keyword = queryParams.get("keyword");
+  const webtoons = location.state?.webtoons || [];
 
   const [selectedOption, setSelectedOption] = useState(0);
   const [filteredWebtoons, setFilteredWebtoons] = useState([]);
-  const [searchWebtoons, setSearchWebtoons] = useState([]);
+
+  useEffect(() => {
+    setFilteredWebtoons(webtoons.filter(webtoon => !webtoon.isEnd === true));
+  }, [webtoons]);
 
   const handleOptionClick = index => {
     setSelectedOption(index);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_API}search?keyword=${keyword}`
-        );
-        const data = await response.json();
-        const searchWebtoons = data.webtoons;
-        //연재여부 필터
-        const filteredWebtoons = searchWebtoons.filter(
-          webtoon => !webtoon.updateDays.includes("finished")
-        );
-
-        setFilteredWebtoons(filteredWebtoons);
-        setSearchWebtoons(searchWebtoons);
-      } catch (error) {
-        console.error("Error fetching data", error);
-      }
-    };
-    fetchData();
-  }, [keyword]);
 
   return (
     <Container>
@@ -54,13 +34,13 @@ const WebtoonSearchList = () => {
           onClick={() => handleOptionClick(0)}
           isSelected={selectedOption === 0}
         >
-          전체({searchWebtoons.length})
+          전체({webtoons.length})
         </Tab>
         <Tab
           onClick={() => handleOptionClick(1)}
           isSelected={selectedOption === 1}
         >
-          웹툰({searchWebtoons.length})
+          웹툰({webtoons.length})
         </Tab>
         <Tab
           onClick={() => handleOptionClick(2)}
@@ -99,37 +79,44 @@ const WebtoonSearchList = () => {
           <ContentHeadArea>
             <ContentHeader>
               <TabName>웹툰</TabName>
-              <ResultCount>총 {searchWebtoons.length}</ResultCount>
+              <ResultCount>총 {webtoons.length}</ResultCount>
             </ContentHeader>
           </ContentHeadArea>
           <Result>
             <ResultList>
-              {searchWebtoons.map(webtoon => (
+              {webtoons.map(webtoon => (
                 <ResultItemBox key={webtoon._id}>
                   <>
                     <ImageBox>
-                      <Image src={webtoon.img} alt={webtoon.title}></Image>
+                      <Image
+                        src={webtoon.thumbnail[0]}
+                        alt={webtoon.title}
+                      ></Image>
                     </ImageBox>
                     <ResultItemInfo>
-                      <Title>{webtoon.title}</Title>
+                      <Title>
+                        {webtoon.title.split(keyword).map((part, index) => (
+                          <span key={index}>
+                            {part}
+                            {index <
+                              webtoon.title.split(keyword).length - 1 && (
+                              <HighlightedKeyword>{keyword}</HighlightedKeyword>
+                            )}
+                          </span>
+                        ))}
+                      </Title>
                       <WebtoonInfo>
-                        <Author>
-                          {webtoon.author} <MiddleDot>&bull;</MiddleDot> 글
-                          <Sol> &#47; </Sol>
-                        </Author>
-                        <Illustrator>
-                          {webtoon.author} <MiddleDot>&bull;</MiddleDot> 그림
-                        </Illustrator>
-                        <Separator>&#10072;</Separator>
-                        <LastUpdate>
-                          {filteredWebtoons ? (
+                        <InfoBox>
+                          <AuthorName>{webtoon.authors}</AuthorName> 글/그림
+                        </InfoBox>
+                        <InfoBox>
+                          {filteredWebtoons.includes(webtoon) ? (
                             <span> 연재중</span>
                           ) : (
                             <span> 완결</span>
                           )}
-                        </LastUpdate>
+                        </InfoBox>
                       </WebtoonInfo>
-                      {/* <Summary>{webtoon.searchKeyword}</Summary> */}
                       <TagArea>
                         <TagGroup>
                           <Tag>#판타지</Tag>
@@ -277,37 +264,33 @@ const Title = styled.div`
   font-weight: bold;
   line-height: 25px;
   text-align: left;
+`;
+
+const HighlightedKeyword = styled.span`
   color: rgb(0, 220, 100);
 `;
 
 const WebtoonInfo = styled.div`
+  display: flex;
   font-size: 14px;
-`;
-
-const Author = styled.span`
   font-weight: bold;
+  color: gray;
 `;
 
-const Illustrator = styled.span`
-  font-weight: bold;
+const InfoBox = styled.div`
+  padding: 0 5px;
+  border-right: 1px solid grey;
+
+  &:first-child {
+    padding-left: 0;
+  }
+  &:last-child {
+    border-right: none;
+  }
 `;
 
-const LastUpdate = styled.span`
-  font-weight: bold;
-  color: rgb(102, 102, 102);
-`;
-
-const Summary = styled.p`
-  font-size: 15px;
-  font-weight: 500;
-  display: -webkit-box;
-  text-overflow: ellipsis;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  margin-top: 3px;
-  height: 20px;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+const AuthorName = styled.span`
+  color: ${props => props.theme.fontColor};
 `;
 
 const TagArea = styled.div`
@@ -330,17 +313,4 @@ const Tag = styled.div`
   font-weight: bold;
   color: rgb(102, 102, 102);
   cursor: pointer;
-`;
-
-const MiddleDot = styled.span`
-  color: #666666;
-`;
-
-const Separator = styled.span`
-  margin: 0 3px 0 3px;
-  color: #666666;
-`;
-
-const Sol = styled.span`
-  color: #666666;
 `;
