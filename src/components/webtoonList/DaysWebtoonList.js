@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 // components
 import WebtoonFiltered from "./WebtoonFiltered";
@@ -6,6 +6,7 @@ import SkeletonLoader from "../common/SkeletonLoader";
 
 const DaysWebtoonList = ({ webtoons, loading }) => {
   const [currentDay, setCurrentDay] = useState("");
+  const observer = useRef();
 
   const daysOfWeek = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -37,6 +38,28 @@ const DaysWebtoonList = ({ webtoons, loading }) => {
     }
   };
 
+  const handleLazyLoad = (entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        observer.unobserve(img);
+      }
+    });
+  };
+
+  useEffect(() => {
+    observer.current = new IntersectionObserver(handleLazyLoad);
+    const images = document.querySelectorAll("img[data-src]");
+    images.forEach(img => observer.current.observe(img));
+
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
+  }, [webtoons]);
+
   return (
     <>
       <Header>
@@ -58,9 +81,8 @@ const DaysWebtoonList = ({ webtoons, loading }) => {
                   <ItemBox key={webtoon.id}>
                     <ImageBox>
                       <Image
-                        src={webtoon.thumbnail[0]}
+                        data-src={webtoon.thumbnail[0]}
                         alt="웹툰 이미지"
-                        onClick={() => window.open(webtoon.url, "_blank")}
                         loading="lazy"
                       />
                     </ImageBox>
@@ -147,7 +169,7 @@ const Image = styled.img`
   object-fit: cover;
   transform: scale(1);
   transition-duration: 0.3s;
-  loading: lazy;
+  loading: lazy; /* 이미지 로딩 최적화 */
 
   &:hover {
     transform: scale(1.05, 1.05);
