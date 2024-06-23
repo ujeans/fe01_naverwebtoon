@@ -12,5 +12,6 @@ ${reset}
 body {
   background-color: ${({ theme }) => theme.bgColor};
   color: ${({ theme }) => theme.fontColor};
+  font-family: 'YourFontFamily', sans-serif;
 }
 `;

@@ -116,6 +116,7 @@ const WebtoonImage = styled.img`
   object-fit: cover;
   cursor: pointer;
   border-radius: 5px;
+  loading: lazy;
 `;
 
 const NewIcon = styled.div`

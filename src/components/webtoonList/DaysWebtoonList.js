@@ -61,6 +61,7 @@ const DaysWebtoonList = ({ webtoons, loading }) => {
                         src={webtoon.thumbnail[0]}
                         alt="웹툰 이미지"
                         onClick={() => window.open(webtoon.url, "_blank")}
+                        loading="lazy"
                       />
                     </ImageBox>
                     <TitleBox>
@@ -146,6 +147,7 @@ const Image = styled.img`
   object-fit: cover;
   transform: scale(1);
   transition-duration: 0.3s;
+  loading: lazy;
 
   &:hover {
     transform: scale(1.05, 1.05);
