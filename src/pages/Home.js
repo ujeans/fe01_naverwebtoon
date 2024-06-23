@@ -1,12 +1,20 @@
 import { Helmet } from "react-helmet-async";
+import { Suspense, lazy, useEffect, useState } from "react";
 // UI
 import Layout from "../UI/Layout";
 // components
-import MonthNewWebtoonUI from "../components/monthnewwebtoon/MonthNewWebtoonUI";
-import DaysWebtoonList from "../components/webtoonList/DaysWebtoonList";
+// import MonthNewWebtoonUI from "../components/monthnewwebtoon/MonthNewWebtoonUI";
+// import DaysWebtoonList from "../components/webtoonList/DaysWebtoonList";
 import Footer from "../components/footer/Footer";
-import { useEffect, useState } from "react";
 import WebtoonDayHeader from "../components/webtoonHeader/WebtoonDayHeader";
+
+// Lazy loading
+const MonthNewWebtoonUI = lazy(() =>
+  import("../components/monthnewwebtoon/MonthNewWebtoonUI")
+);
+const DaysWebtoonList = lazy(() =>
+  import("../components/webtoonList/DaysWebtoonList")
+);
 
 const Home = () => {
   const [allWebtoons, setAllWebtoons] = useState([]);
@@ -69,8 +77,10 @@ const Home = () => {
       </Helmet>
 
       <WebtoonDayHeader />
-      <MonthNewWebtoonUI webtoons={allWebtoons} loading={loading} />
-      <DaysWebtoonList webtoons={allWebtoons} loading={loading} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <MonthNewWebtoonUI webtoons={allWebtoons} loading={loading} />
+        <DaysWebtoonList webtoons={allWebtoons} loading={loading} />
+      </Suspense>
       <Footer />
     </Layout>
   );
