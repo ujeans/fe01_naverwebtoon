@@ -21,10 +21,9 @@ https://github.com/SuperCoding24/fe01_naverwebtoon/assets/101804857/6fa1c866-3d1
 <br/>
 
 ## 🧑‍💻 Member
-
 | **김영욱** | **이영호** | **최미영** | **홍유진** |
 | :------: |  :------: | :------: | :------: |
-| [<img src="" height=150 width=150> <br/> @kywu9232](https://github.com/kywu9232) | [<img src="" height=150 width=150> <br/> @zeroho931](https://github.com/zeroho931) | [<img src="" height=150 width=150> <br/> @meeyoungchoi](https://github.com/meeyoungchoi-front-dev) | [<img src="" height=150 width=150> <br/> @ujeans](https://github.com/ujeans) |
+| [<img src="https://github.com/SuperCoding24/fe01_naverwebtoon/assets/101804857/8f42d59b-0745-42fb-9b32-59a5bb634856" height=150 width=150> <br/> @kywu9232](https://github.com/kywu9232) | [<img src="https://github.com/SuperCoding24/fe01_naverwebtoon/assets/101804857/917191c8-73ab-4a99-9af9-be16c5d9b08e" height=150 width=150> <br/> @zeroho931](https://github.com/zeroho931) | [<img src="https://github.com/SuperCoding24/fe01_naverwebtoon/assets/101804857/508f7584-3fc8-4a94-b535-9cc7257f6ee7" height=150 width=150> <br/> @meeyoungchoi](https://github.com/meeyoungchoi-front-dev) | [<img src="https://github.com/SuperCoding24/fe01_naverwebtoon/assets/101804857/82e6b30f-d38b-450e-8e5b-2c7f64e111a2" height=150 width=150> <br/> @ujeans](https://github.com/ujeans) |
 
 
 <br/>
